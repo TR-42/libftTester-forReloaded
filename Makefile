@@ -10,8 +10,8 @@ MANDATORY		= memset bzero memcpy memmove memchr memcmp strlen isalpha isdigit is
 BONUS			= lstnew lstadd_front lstsize lstlast lstadd_back lstdelone lstclear lstiter lstmap
 VSOPEN			= $(addprefix vs, $(MANDATORY)) $(addprefix vs, $(BONUS))
 
-CC		= clang++
-CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH) 
+_CC		= clang++
+_CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH) 
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
 	VALGRIND = valgrind -q --leak-check=full
@@ -21,10 +21,10 @@ ifeq ($(IN_DOCKER),TRUE)
 endif
 
 $(MANDATORY): %: mandatory_start
-	@$(CC) $(CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
+	@$(_CC) $(_CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
 
 $(BONUS): %: bonus_start
-	@$(CC) $(CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
+	@$(_CC) $(_CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
 
 $(VSOPEN): vs%:
 	@code $(TESTS_PATH)ft_$*_test.cpp
