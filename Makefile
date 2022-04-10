@@ -30,7 +30,7 @@ ifeq ($(IN_DOCKER),TRUE)
 	LIBFT_PATH = /project/
 endif
 
-$(MANDATORY):
+$(MANDATORY): %:
 	@$(_CC) $(_CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
 
 $(BONUS): %: bonus_start
