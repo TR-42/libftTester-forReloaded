@@ -7,6 +7,9 @@ Clone this tester in your libft repository, or somewhere else and customize the 
 
 ## Commands
 make m = launch mandatory tests  
+make m0 = launch Libft-00 tests  
+make m1 = launch Libft-01 tests  
+make m2 = launch Libft-02 tests  
 make b = launch bonus tests  
 make a = launch mandatory tests + bonus tests  
 make [function name] = launch associated test ex: `make calloc`  
