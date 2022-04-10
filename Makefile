@@ -20,7 +20,7 @@ MANDATORY01_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY01)))
 MANDATORY02_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY02)))
 
 _CC		= clang++
-_CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH) 
+_CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH)
 CFLAGS	= -Wall -Wextra -Werror
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
@@ -97,7 +97,7 @@ m0: mandatory00_start $(MANDATORY00)
 m1: mandatory01_start $(MANDATORY01)
 m2: mandatory02_start $(MANDATORY02)
 b: $(BONUS)
-a: m b 
+a: m b
 
 clean:
 	make clean -C $(LIBFT_PATH) && rm -rf a.out*
