@@ -7,11 +7,21 @@ MANDATORY		= memset bzero memcpy memmove memchr memcmp strlen isalpha isdigit is
 				isascii isprint toupper tolower strchr strrchr strncmp strlcpy strlcat strnstr \
 				atoi calloc strdup substr strjoin strtrim split itoa strmapi putchar_fd putstr_fd \
 				putendl_fd putnbr_fd striteri
+MANDATORY00		= isalpha isdigit isalnum isascii isprint strlen memset bzero memcpy memmove strlcpy strlcat
+MANDATORY01		= toupper tolower strchr strrchr strncmp memchr memcmp strnstr atoi
+MANDATORY02		= calloc strdup substr strjoin strtrim split itoa
 BONUS			= lstnew lstadd_front lstsize lstlast lstadd_back lstdelone lstclear lstiter lstmap
 VSOPEN			= $(addprefix vs, $(MANDATORY)) $(addprefix vs, $(BONUS))
+LIBFT00			= libft00.a
+LIBFT01			= libft01.a
+LIBFT02			= libft02.a
+MANDATORY00_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY00)))
+MANDATORY01_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY01)))
+MANDATORY02_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY02)))
 
 _CC		= clang++
 _CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH) 
+CFLAGS	= -Wall -Wextra -Werror
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
 	VALGRIND = valgrind -q --leak-check=full
@@ -20,7 +30,7 @@ ifeq ($(IN_DOCKER),TRUE)
 	LIBFT_PATH = /project/
 endif
 
-$(MANDATORY): %: mandatory_start
+$(MANDATORY):
 	@$(_CC) $(_CFLAGS) $(UTILS) $(TESTS_PATH)ft_$*_test.cpp -L$(LIBFT_PATH) -lft && $(VALGRIND) ./a.out && rm -f a.out
 
 $(BONUS): %: bonus_start
@@ -29,10 +39,37 @@ $(BONUS): %: bonus_start
 $(VSOPEN): vs%:
 	@code $(TESTS_PATH)ft_$*_test.cpp
 
+$(LIBFT00): $(MANDATORY00_OBJ)
+	ar rc $(LIBFT_PATH)/$@ $^
+	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
+
+$(LIBFT01): $(MANDATORY01_OBJ)
+	ar rc $(LIBFT_PATH)/$@ $^
+	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
+
+$(LIBFT02): $(MANDATORY02_OBJ)
+	ar rc $(LIBFT_PATH)/$@ $^
+	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
+
 mandatory_start: update message
 	@tput setaf 6
 	make -C $(LIBFT_PATH)
 	@tput setaf 4 && echo [Mandatory]
+
+mandatory00_start: update
+	@tput setaf 6
+	make $(LIBFT00)
+	@tput setaf 4 && echo [Mandatory-00]
+
+mandatory01_start: update
+	@tput setaf 6
+	make $(LIBFT01)
+	@tput setaf 4 && echo [Mandatory-01]
+
+mandatory02_start: update
+	@tput setaf 6
+	make $(LIBFT02)
+	@tput setaf 4 && echo [Mandatory-02]
 
 bonus_start: update message
 	@tput setaf 6
@@ -55,7 +92,10 @@ $(addprefix docker, $(MANDATORY)) $(addprefix docker, $(BONUS)) dockerm dockerb 
 	docker exec -ti mc make $* -C libftTester || true
 	@docker rm -f mc > /dev/null 2>&1
 
-m: $(MANDATORY)
+m: mandatory_start $(MANDATORY)
+m0: mandatory00_start $(MANDATORY00)
+m1: mandatory01_start $(MANDATORY01)
+m2: mandatory02_start $(MANDATORY02)
 b: $(BONUS)
 a: m b 
 
