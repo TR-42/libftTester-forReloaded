@@ -16,7 +16,13 @@ LIBFT00			= libft00.a
 LIBFT01			= libft01.a
 LIBFT02			= libft02.a
 MANDATORY00_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY00)))
+MANDATORY00_EXISTING_SRC	= $(shell ls $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .c, $(MANDATORY00))) 2> /dev/null)
+MANDATORY00_EXISTING_OBJ	= $(MANDATORY00_EXISTING_SRC:.c=.o)
+
 MANDATORY01_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY01)))
+MANDATORY01_EXISTING_SRC	= $(shell ls $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .c, $(MANDATORY01))) 2> /dev/null)
+MANDATORY01_EXISTING_OBJ	= $(MANDATORY01_EXISTING_SRC:.c=.o)
+
 MANDATORY02_OBJ	= $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix .o, $(MANDATORY02)))
 
 _CC		= clang++
@@ -43,11 +49,11 @@ $(LIBFT00): $(MANDATORY00_OBJ)
 	ar rc $(LIBFT_PATH)/$@ $^
 	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
 
-$(LIBFT01): $(MANDATORY01_OBJ)
+$(LIBFT01): $(MANDATORY01_OBJ) $(MANDATORY00_EXISTING_OBJ)
 	ar rc $(LIBFT_PATH)/$@ $^
 	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
 
-$(LIBFT02): $(MANDATORY02_OBJ)
+$(LIBFT02): $(MANDATORY02_OBJ) $(MANDATORY00_EXISTING_OBJ) $(MANDATORY01_EXISTING_OBJ)
 	ar rc $(LIBFT_PATH)/$@ $^
 	cp $(LIBFT_PATH)/$@ $(LIBFT_PATH)/libft.a
 
