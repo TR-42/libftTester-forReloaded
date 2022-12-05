@@ -28,7 +28,7 @@ MANDATORY02_EXISTING_SRC	= $(shell ls $(addprefix $(LIBFT_PATH)/ft_,$(addsuffix 
 MANDATORY02_EXISTING_OBJ	= $(MANDATORY02_EXISTING_SRC:.c=.o)
 
 _CC		= clang++
-_CFLAGS	= -g3 -ldl -std=c++11 -I utils/ -I$(LIBFT_PATH)
+_CFLAGS	= -g3 -ldl -gdwarf-4 -std=c++11 -I utils/ -I$(LIBFT_PATH) 
 CFLAGS	= -Wall -Wextra -Werror
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
